@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品滚动展示</title>
+    <style>
+        html,body,div,img{
+            margin: 0;
+            padding:0;
+        }
+        .container{
+            width: 1200px;
+            height:200px ;
+            margin: 50px auto;
+            border: 1px solid saddlebrown;
+            overflow-x: hidden;
+            font-size: 0;
+        }
+        .box{
+            width: 4000px;
+            height: 200px;
+        }
+        .box-begin,.box-end{
+            display: inline-block;
+        }
+        .box img{
+            border: none;
+            width: 200px;
+            height: 200px;
+            filter: blur(3px);
+        }
+        .box img:hover{
+            position: relative;
+            box-shadow: 1px 1px 1px #554e21;
+            top:-2px;
+            filter: blur(0);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="box">
+        <div class="box-begin">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+            <img src="http://img.18183.com/uploads/allimg/171226/1554391463-1.jpg" alt="">
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+
+    class Show{
+        constructor(){
+            this.DOM = {
+                'CONTAINER' : document.getElementsByClassName('container')[0],
+                'BOXBEGIN'  : document.getElementsByClassName('container')[0].getElementsByClassName('box-begin')[0],
+                'WIDTH'     : document.getElementsByClassName('container')[0].getElementsByClassName('box-begin')[0].offsetWidth
+            }
+            this.TIMER = null;
+        };
+        boxFllow(){
+            // 当卷去的值 等于 元素盒子的宽减去显示盒子的宽  就相当于刚走完
+            if(this.DOM.CONTAINER.scrollLeft === this.DOM.WIDTH - this.DOM.CONTAINER.offsetWidth){
+                document.getElementsByClassName('box')[0].appendChild(this.DOM.BOXBEGIN.cloneNode(true)); 
+                this.DOM.CONTAINER.scrollLeft=0;
+            }else{
+                this.DOM.CONTAINER.scrollLeft++;
+            }
+        };
+        timer(){
+            let _this = this;
+            this.TIMER = window.setInterval(this.boxFllow.bind(_this),20)
+        };
+        handle(){
+            let _this = this;
+            this.DOM.CONTAINER.onmouseover =()=>{
+                window.clearInterval(this.TIMER);
+            }; 
+            this.DOM.CONTAINER.onmouseout =()=>{
+                this.timer();
+            } 
+        };
+        init(){
+            this.timer();
+            this.handle();
+        };
+    }
+   let show = new Show();
+   show.init();
+
+</script>
